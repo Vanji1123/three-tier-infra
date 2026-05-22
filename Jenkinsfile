@@ -6,6 +6,7 @@ pipeline {
 apiVersion: v1
 kind: Pod
 spec:
+  serviceAccountName: jenkins-irsa
   containers:
   - name: terraform
     image: 806997205166.dkr.ecr.ap-south-1.amazonaws.com/custom-jenkins:latest
@@ -52,6 +53,15 @@ spec:
                 }
             }
         }
+
+        stage('Terraform apply') {
+            steps {
+                dir('main-infra') {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+
 
     }
 
