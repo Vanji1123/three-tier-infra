@@ -22,5 +22,4 @@ availability_zones = [
 ]
 
 db_username = "admin"
-
 db_password = "vanji1123"
