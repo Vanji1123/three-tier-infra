@@ -21,7 +21,6 @@ module "security" {
 
   vpc_id = module.vpc.vpc_id
 
-  eks_security_gid = module.eks.cluster_security_group_id
 }
 
 module "rds" {
