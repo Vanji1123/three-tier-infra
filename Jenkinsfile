@@ -31,7 +31,39 @@ spec:
             }
         }
 
-        stage('Terraform Init') {
+        stage('Bootstrap Init') {
+            steps {
+                dir('bootstrap') {
+                    sh 'terraform init'
+                }
+            }
+        }
+
+        stage('Bootstrap Validate') {
+            steps {
+                dir('bootstrap') {
+                    sh 'terraform validate'
+                }
+            }
+        }
+
+        stage('Bootstrap plan') {
+            steps {
+                dir('bootstrap') {
+                    sh 'terraform plan'
+                }
+            }
+        }
+
+        stage('Bootstrap Apply') {
+            steps {
+                dir('bootstrap') {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+
+        stage('Main Infra Init') {
             steps {
                 dir('main-infra') {
                     sh 'terraform init -backend-config=backend.hcl'
@@ -39,7 +71,7 @@ spec:
             }
         }
 
-        stage('Terraform Validate') {
+        stage('Main Infra Validate') {
             steps {
                 dir('main-infra') {
                     sh 'terraform validate'
@@ -47,22 +79,21 @@ spec:
             }
         }
 
-        stage('Terraform Plan') {
+        stage('Main Infra Plan') {
             steps {
                 dir('main-infra') {
-                    sh 'terraform plan -var-file=dev.tfvars'
+                    sh 'terraform plan -backend-config=backend.hcl'
                 }
             }
         }
 
-        stage('Terraform Apply') {
+        stage('Main Infra Apply') {
             steps {
                 dir('main-infra') {
-                    sh 'terraform apply -auto-approve -var-file=dev.tfvars'
+                    sh 'terraform apply -auto-approve -backend-config=backend.hcl'
                 }
             }
         }
 
     }
-
 }
