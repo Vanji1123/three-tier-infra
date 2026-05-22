@@ -31,38 +31,6 @@ spec:
             }
         }
 
-        stage('Bootstrap Init') {
-            steps {
-                dir('bootstrap') {
-                    sh 'terraform init'
-                }
-            }
-        }
-
-        stage('Bootstrap Validate') {
-            steps {
-                dir('bootstrap') {
-                    sh 'terraform validate'
-                }
-            }
-        }
-
-        stage('Bootstrap plan') {
-            steps {
-                dir('bootstrap') {
-                    sh 'terraform plan -var-file=terraform.tfvars'
-                }
-            }
-        }
-
-        stage('Bootstrap Apply') {
-            steps {
-                dir('bootstrap') {
-                    sh 'terraform apply -var-file=terraform.tfvars -auto-approve'
-                }
-            }
-        }
-
         stage('Main Infra Init') {
             steps {
                 dir('main-infra') {
@@ -82,7 +50,7 @@ spec:
         stage('Main Infra Plan') {
             steps {
                 dir('main-infra') {
-                    sh 'terraform plan -backend-config=backend.hcl'
+                    sh 'terraform plan -var-file=dev.tfvars'
                 }
             }
         }
@@ -90,7 +58,7 @@ spec:
         stage('Main Infra Apply') {
             steps {
                 dir('main-infra') {
-                    sh 'terraform apply -auto-approve -backend-config=backend.hcl'
+                    sh 'terraform apply -var-file=dev.tfvars -auto-approve'
                 }
             }
         }
