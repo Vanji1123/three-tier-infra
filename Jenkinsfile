@@ -1,6 +1,21 @@
 pipeline {
 
-    agent any
+   agent {
+    kubernetes {
+        yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: terraform
+    image: 806997205166.dkr.ecr.ap-south-1.amazonaws.com/custom-jenkins:latest
+    command:
+    - cat
+    tty: true
+"""
+        defaultContainer 'terraform'
+    }
+}
 
     environment {
         AWS_REGION = 'ap-south-1'
