@@ -48,7 +48,8 @@ module "eks" {
 
   subnet_ids = module.vpc.private_subnet_ids
 
-  eks_security_gid = module.security.eks_security_group_id
+  eks_security_gid = module.security.rds_security_group_id
+
 }
 
 module "ecr" {
