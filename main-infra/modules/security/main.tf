@@ -14,9 +14,7 @@ resource "aws_security_group" "rds_sg" {
 
     protocol = "tcp"
 
-    security_groups = [
-      aws_eks_cluster.main_cluster.vpc_config[0].cluster_security_group_id
-    ]
+    security_groups = [var.eks_security_gid]
   }
 
   egress {
