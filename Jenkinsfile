@@ -1,12 +1,13 @@
 pipeline {
 
-   agent {
-    kubernetes {
-        yaml """
+    agent {
+        kubernetes {
+            yaml """
 apiVersion: v1
 kind: Pod
 spec:
   serviceAccountName: jenkins-irsa
+
   containers:
   - name: terraform
     image: 806997205166.dkr.ecr.ap-south-1.amazonaws.com/custom-jenkins:latest
@@ -14,9 +15,9 @@ spec:
     - cat
     tty: true
 """
-        defaultContainer 'terraform'
+            defaultContainer 'terraform'
+        }
     }
-}
 
     environment {
         AWS_REGION = 'ap-south-1'
@@ -49,19 +50,18 @@ spec:
         stage('Terraform Plan') {
             steps {
                 dir('main-infra') {
-                    sh 'terraform plan'
+                    sh 'terraform plan -var-file=dev.tfvars'
                 }
             }
         }
 
-        stage('Terraform apply') {
+        stage('Terraform Apply') {
             steps {
                 dir('main-infra') {
-                    sh 'terraform apply -auto-approve'
+                    sh 'terraform apply -auto-approve -var-file=dev.tfvars'
                 }
             }
         }
-
 
     }
 
