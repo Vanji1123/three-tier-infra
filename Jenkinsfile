@@ -50,7 +50,7 @@ spec:
         stage('Bootstrap plan') {
             steps {
                 dir('bootstrap') {
-                    sh 'terraform plan'
+                    sh 'terraform plan -var-file=terraform.tfvars'
                 }
             }
         }
@@ -58,7 +58,7 @@ spec:
         stage('Bootstrap Apply') {
             steps {
                 dir('bootstrap') {
-                    sh 'terraform apply -auto-approve'
+                    sh 'terraform apply -var-file=terraform.tfvars -auto-approve'
                 }
             }
         }
